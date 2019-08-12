@@ -1,0 +1,46 @@
+package com.example.sendhttp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import android.os.StrictMode.ThreadPolicy.Builder;
+import android.os.StrictMode;
+import android.os.Bundle;
+import android.util.Log;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        StrictMode.setThreadPolicy(new Builder().permitAll().build());
+        String url = "https://tsug0d.com/present/tsu.txt";
+        StringBuilder url_holder = new StringBuilder();
+        url_holder.append(url);
+        try
+        {
+            URLConnection conn = new URL(url_holder.toString()).openConnection();
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setUseCaches(false);
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String response;
+            String data_from_stream;
+            for (response = new String(); true; response += data_from_stream) {
+                String stream = buffer.readLine();
+                data_from_stream = stream;
+                if (stream == null) {
+                    break;
+                }
+            }
+            Log.i("tsu", response);
+        }
+        catch (Exception v2)
+        {
+            Log.i("lol","lol");
+        }
+    }
+}
